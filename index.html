@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ALUSET ChatGPT</title>
+</head>
+<body>
+  <h1>Mirë se vini në ALUSET</h1>
+  <div id="chatbox" style="position:fixed;bottom:20px;right:20px;width:300px;height:400px;border:1px solid #ccc;background:#fff;box-shadow:0 0 10px rgba(0,0,0,0.3);padding:10px;">
+    <h3>ALUSET Genius</h3>
+    <div id="messages" style="height:300px;overflow:auto;border:1px solid #ddd;margin-bottom:10px;padding:5px;"></div>
+    <input id="input" type="text" placeholder="Shkruani mesazhin..." style="width:80%;"/>
+    <button onclick="sendMessage()">Dërgo</button>
+  </div>
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("input");
+      const message = input.value;
+      const messagesDiv = document.getElementById("messages");
+      messagesDiv.innerHTML += "<div><strong>Ju:</strong> " + message + "</div>";
+      const res = await fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message})
+      });
+      const data = await res.json();
+      messagesDiv.innerHTML += "<div><strong>ALUSET Genius:</strong> " + data.reply + "</div>";
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
